@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 22:12:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/13 23:50:27 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/14 00:01:38 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,14 @@
 
 int		main()
 {
-	char	*tetris;
-	int		red;
-
+	int		pcs[26][4][2];
 	int 	fd;
-	int		error;
-	char *tetridup = NULL;
 
-
-	error = 0;
 	fd = open("sample.txt", O_RDONLY);
-	read_check_parse(fd);
+	read_check_parse(fd, &pcs);
 	
+
+	ft_putnbr(pcs[0][0][0]);
 	return(0);
 }
 

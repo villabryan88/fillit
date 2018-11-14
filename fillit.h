@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 22:16:07 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/13 23:43:27 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/13 23:59:57 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@
 
 int     preparse_errorcheck(char *piece);
 int		reader(int	fd, char **tetris);
-int		read_check_parse(int fd);
+int		read_check_parse(int fd, int (*pcs)[26][4][2]);
 
 #endif
