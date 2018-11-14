@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader.c                                           :+:      :+:    :+:   */
+/*   fillit.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/13 19:35:48 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/13 22:28:29 by bvilla           ###   ########.fr       */
+/*   Created: 2018/11/13 22:16:07 by bvilla            #+#    #+#             */
+/*   Updated: 2018/11/13 23:59:57 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fillit.h>
+#ifndef FILLIT_H
+# define FILLIT_H
 
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include "libft/libft.h"
 
-int		reader(int	fd, char **tetris)
-{
-	char	*pcs;
-	int		red;
+int     preparse_errorcheck(char *piece);
+int		reader(int	fd, char **tetris);
+int		read_check_parse(int fd, int (*pcs)[26][4][2]);
 
-	pcs = (char*)malloc(sizeof(char) * 22);
-	red = read(fd, pcs, 21);
-	pcs[red] = '\0';
-	*tetris = pcs;
-	return (red);
-}
-
+#endif
