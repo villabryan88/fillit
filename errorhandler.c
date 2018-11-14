@@ -1,17 +1,6 @@
-#include <stdio.h>
-size_t		ft_strlen(const char *str)
-{
-	size_t		idx;
+#include <fillit.h>
 
-	idx = 0;
-	while (str[idx])
-	{
-		idx++;
-	}
-	return (idx);
-}
-
-int	ft_charcheck(char c, int *x, int *y, int *count)
+static int	ft_charcheck(char c, int *x, int *y, int *count)
 {
 	*count = (c == '#' ? *count + 1 : *count);
 	if (c != '\n')
@@ -51,13 +40,4 @@ int		preparse_errorcheck(char *piece)
 		return (1);
 	return (0);
 }
-int main(void)
-{
-	char *s1 = "...#\n...#\n...#\n...#\n\n";
-	char *s2 = "...#\n...#\n...#\n.#.#\n\n";
-	int x = preparse_errorcheck(s1);
-	printf("%d", x);
-	x = preparse_errorcheck(s2);
-	printf("\n%d", x);
-	return (0);
-}
+
