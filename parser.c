@@ -6,9 +6,39 @@
 /*   By: amohamed <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:17:50 by amohamed          #+#    #+#             */
-/*   Updated: 2018/11/14 11:25:25 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/15 12:55:58 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+int		ft_postparse_check(int (*tet)[4][2])
+{
+	int	b;
+	int i;
+	int	diff;
+	int	match;
+	
+	b = 0;
+	match = 0;
+	while (b < 3)
+	{	
+		i = b + 1;
+		while (i < 4)
+		{
+			diff = 0;
+			if ((*tet)[b][0] == (*tet)[i][0]) 
+				diff = (*tet)[b][1] - (*tet)[i][1];
+			else if ((*tet)[b][1] == (*tet)[i][1]) 
+				diff = (*tet)[b][0] - (*tet)[i][0];
+			if (diff * diff == 1)
+				match++;
+			i++;
+		}
+		b++;
+	}
+	if (match >= 3)
+		return (0);
+	return (1);
+}
 
 void ft_adjust_pieces(int (*pcs)[26][4][2], int i)
 {
@@ -93,6 +123,8 @@ int ft_parse(char *s, int (*pcs)[26][4][2])
 		s++;
 	}	
 	ft_move_ref_pt(pcs, i);
+	if (ft_postparse_check((*pcs) + i))
+		return (-1);
 	i++;
 	return (i);
 }

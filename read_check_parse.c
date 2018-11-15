@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:19:05 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/14 00:10:15 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/15 00:10:30 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int		read_check_parse(int fd, int (*pcs)[26][4][2])
          if ((error = preparse_errorcheck(tetris)))
             break;
 		 ttl = ft_parse(tetris, pcs);
+		 if (ttl == -1 && (error = ttl))
+			 break;
     }
     if (error || !last)
     {
