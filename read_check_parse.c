@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:19:05 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/14 00:00:33 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/14 00:10:15 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int		read_check_parse(int fd, int (*pcs)[26][4][2])
 	int		red;
 	int		last;
 	int		error;
+	int		ttl;
 
+	ttl = 0;
 	error = 0;
 	last = 0;
-	*pcs[0][0][0] = 10;
-    while ((red = reader(fd, &tetris)) > 0)
+	while ((red = reader(fd, &tetris)) > 0)
     {
         if (red == 20)
 		{
@@ -32,11 +33,12 @@ int		read_check_parse(int fd, int (*pcs)[26][4][2])
 		}
          if ((error = preparse_errorcheck(tetris)))
             break;
+		 ttl = ft_parse(tetris, pcs);
     }
     if (error || !last)
     {
         ft_putstr("error");
         return (-1);
     }
-    return(1);
+    return(ttl);
 }
