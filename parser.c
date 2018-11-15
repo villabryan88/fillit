@@ -6,7 +6,7 @@
 /*   By: amohamed <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:17:50 by amohamed          #+#    #+#             */
-/*   Updated: 2018/11/15 14:41:44 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/15 14:44:16 by amohamed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ int		ft_postparse_check(int (*tet)[4][2])
 	int i;
 	int	diff;
 	int	match;
-	
+
 	b = 0;
 	match = 0;
 	while (b < 3)
-	{	
+	{
 		i = b + 1;
 		while (i < 4)
 		{
 			diff = 0;
-			if ((*tet)[b][0] == (*tet)[i][0]) 
+			if ((*tet)[b][0] == (*tet)[i][0])
 				diff = (*tet)[b][1] - (*tet)[i][1];
-			else if ((*tet)[b][1] == (*tet)[i][1]) 
+			else if ((*tet)[b][1] == (*tet)[i][1])
 				diff = (*tet)[b][0] - (*tet)[i][0];
 			if (diff * diff == 1)
 				match++;
@@ -35,9 +35,7 @@ int		ft_postparse_check(int (*tet)[4][2])
 		}
 		b++;
 	}
-	if (match >= 3)
-		return (0);
-	return (1);
+	return (match >= 3 ? 0 : 1);
 }
 
 void	ft_adjust_pieces(int (*pcs)[26][4][2], int i)
@@ -60,8 +58,8 @@ void	ft_adjust_pieces(int (*pcs)[26][4][2], int i)
 	pc = 0;
 	while (pc < 4)
 	{
-			(*pcs)[i][pc][0] -= smlx;
-			(*pcs)[i][pc][1] -= smly;
+		(*pcs)[i][pc][0] -= smlx;
+		(*pcs)[i][pc][1] -= smly;
 		pc++;
 	}
 }
@@ -71,8 +69,9 @@ void	ft_move_ref_pt(int (*pcs)[26][4][2], int i)
 	int x_stored;
 	int y_stored;
 	int first;
-	int x = 0;
+	int x;
 
+	x = 0;
 	first = 0;
 	x_stored = 0;
 	y_stored = 0;
@@ -100,7 +99,7 @@ void	ft_read_coord(char *s, int tetri[4][2])
 	b = 0;
 	x = 0;
 	y = 0;
-	while(*s)
+	while (*s)
 	{
 		if (*s == '\n')
 		{
@@ -111,8 +110,8 @@ void	ft_read_coord(char *s, int tetri[4][2])
 		{
 			if (*s == '#')
 			{
-				tetri[b][0] = x; 
-				tetri[b++][1] = y; 	
+				tetri[b][0] = x;
+				tetri[b++][1] = y;
 			}
 			x++;
 		}
@@ -120,9 +119,8 @@ void	ft_read_coord(char *s, int tetri[4][2])
 	}
 }
 
-int 	ft_parse(char *s, int (*pcs)[26][4][2])
+int		ft_parse(char *s, int (*pcs)[26][4][2])
 {
-
 	static int i = 0;
 
 	if (i > 25)
