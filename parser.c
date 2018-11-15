@@ -6,7 +6,7 @@
 /*   By: amohamed <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:17:50 by amohamed          #+#    #+#             */
-/*   Updated: 2018/11/15 12:55:58 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/15 14:41:44 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		ft_postparse_check(int (*tet)[4][2])
 	return (1);
 }
 
-void ft_adjust_pieces(int (*pcs)[26][4][2], int i)
+void	ft_adjust_pieces(int (*pcs)[26][4][2], int i)
 {
 	int	smlx;
 	int	smly;
@@ -66,7 +66,7 @@ void ft_adjust_pieces(int (*pcs)[26][4][2], int i)
 	}
 }
 
-void ft_move_ref_pt(int (*pcs)[26][4][2], int i)
+void	ft_move_ref_pt(int (*pcs)[26][4][2], int i)
 {
 	int x_stored;
 	int y_stored;
@@ -91,14 +91,11 @@ void ft_move_ref_pt(int (*pcs)[26][4][2], int i)
 	ft_adjust_pieces(pcs, i);
 }
 
-
-
-int ft_parse(char *s, int (*pcs)[26][4][2])
+void	ft_read_coord(char *s, int tetri[4][2])
 {
 	int x;
 	int y;
 	int b;
-	static int i = 0;
 
 	b = 0;
 	x = 0;
@@ -114,14 +111,23 @@ int ft_parse(char *s, int (*pcs)[26][4][2])
 		{
 			if (*s == '#')
 			{
-				(*pcs)[i][b][0] = x; 
-				(*pcs)[i][b][1] = y; 	
-				b++;
+				tetri[b][0] = x; 
+				tetri[b++][1] = y; 	
 			}
 			x++;
 		}
 		s++;
-	}	
+	}
+}
+
+int 	ft_parse(char *s, int (*pcs)[26][4][2])
+{
+
+	static int i = 0;
+
+	if (i > 25)
+		return (-1);
+	ft_read_coord(s, (*pcs)[i]);
 	ft_move_ref_pt(pcs, i);
 	if (ft_postparse_check((*pcs) + i))
 		return (-1);
