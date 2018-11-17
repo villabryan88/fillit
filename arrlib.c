@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reader.c                                           :+:      :+:    :+:   */
+/*   arrlib.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/13 19:35:48 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/15 18:50:58 by bvilla           ###   ########.fr       */
+/*   Created: 2018/11/16 23:51:34 by bvilla            #+#    #+#             */
+/*   Updated: 2018/11/17 00:22:25 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fillit.h>
+#include "fillit.h"
 
-int		reader(int fd, char **tetris)
+int		ft_dblstrarrclr(char ***arr, int size, int ret)
 {
-	char	*pcs;
-	int		red;
+	int		i;
 
-	pcs = (char*)malloc(sizeof(char) * 22);
-	red = read(fd, pcs, 21);
-	pcs[red] = '\0';
-	*tetris = pcs;
-	return (red);
+	i = 0;
+	while (i < size)
+		free((*arr)[i++]);
+	free(*arr);
+	*arr = NULL;
+	return (ret);
 }

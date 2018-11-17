@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errorhandler.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/11/15 20:30:13 by bvilla            #+#    #+#             */
+/*   Updated: 2018/11/15 20:31:48 by bvilla           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <fillit.h>
 
 static int	ft_charcheck(char c, int *x, int *y, int *count)
@@ -17,7 +29,7 @@ static int	ft_charcheck(char c, int *x, int *y, int *count)
 	return (0);
 }
 
-int		preparse_errorcheck(char *piece)
+int			preparse_errorcheck(char *piece)
 {
 	int x;
 	int y;
@@ -30,7 +42,7 @@ int		preparse_errorcheck(char *piece)
 	x = 0;
 	if (ft_strlen(piece) != 21)
 		return (1);
-	while(i < 20)
+	while (i < 20)
 	{
 		if (ft_charcheck(piece[i], &x, &y, &count))
 			return (1);
@@ -40,4 +52,3 @@ int		preparse_errorcheck(char *piece)
 		return (1);
 	return (0);
 }
-
