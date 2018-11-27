@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 18:59:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/17 01:20:47 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/26 16:18:23 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,13 @@ int		backtracer(int pcs[26][4][2], int ttl, int pc, char **board)
 	i = 0;
 	k = 0;
 	board[size + 1][0] = pc + 'A';
+
+//	int j;
+//	j = 0;
+//	while (j < size)
+//		ft_putendl(board[j++]);
+//	system("clear");
+
 	while(i < size)
 	{
 		k = 0;
@@ -130,6 +137,8 @@ int		backtracer(int pcs[26][4][2], int ttl, int pc, char **board)
 					return (1);
 				if(backtracer(pcs, ttl, pc + 1, board))
 					return (1);
+				board[size + 1][0] = pc + 'A';
+				cleanup(board, pcs[pc], k, i);
 			}
 			k++;
 		}

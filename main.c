@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 22:12:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/17 01:18:11 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/26 16:20:21 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,16 @@ int		main()
 	size = 0;
 	while (size * size < ttl * 4)
 		size++;
+
 	ft_putnbrendl(size);
 	init_board(&board, size);
-//backtracer(pcs, ttl, 0, board);
-	while (!backtracer(pcs, ttl, 0, board))
-		init_board(&board, ++size);
-
+while (!backtracer(pcs, ttl, 0, board))
+{
+	init_board(&board, ++size);
+	ft_putnbrendl(size);
+}
 	
-
+//	backtracer(pcs, ttl, 0, board);
 
 	i = 0;
 	while (i < size)
