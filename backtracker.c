@@ -6,7 +6,7 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 18:59:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/26 16:18:23 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/26 23:23:05 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		place_block(char **board, int tetri[4][2], int x, int y)
 		else
 		{
 			cleanup(board, tetri, x, y);
-			return (0);
+			return (y + y2 >= size ? -2 : -1);
 		}
 		pc++;
 	}
@@ -111,6 +111,7 @@ int		backtracer(int pcs[26][4][2], int ttl, int pc, char **board)
 	int		i;
 	int		k;
 	int		size;
+	int		oflo;
 
 	i = 0;
 	while (board[i])
@@ -120,18 +121,18 @@ int		backtracer(int pcs[26][4][2], int ttl, int pc, char **board)
 	k = 0;
 	board[size + 1][0] = pc + 'A';
 
-//	int j;
-//	j = 0;
-//	while (j < size)
-//		ft_putendl(board[j++]);
-//	system("clear");
+	int j;
+	j = 0;
+	while (j < size)
+		ft_putendl(board[j++]);
+	system("clear");
 
 	while(i < size)
 	{
 		k = 0;
 		while (k < size)
 		{
-			if(place_block(board, pcs[pc], k, i))
+			if((oflo = place_block(board, pcs[pc], k, i)) > 0)
 			{
 				if (pc == ttl - 1)
 					return (1);
@@ -141,8 +142,12 @@ int		backtracer(int pcs[26][4][2], int ttl, int pc, char **board)
 				cleanup(board, pcs[pc], k, i);
 			}
 			k++;
+			if (oflo < 0)
+				k = size;
 		}
 		i++;
+		if (oflo == -2)
+			i = size;
 	}
 	return (0);
 }
