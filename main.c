@@ -6,15 +6,89 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 22:12:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/26 16:20:21 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/27 23:01:37 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fillit.h>
 #include <stdio.h>
+
+void	print_coord(int pcs[26][6][2], int ttl)
+{
+	int 	i;
+	int		k;
+	int		*p;
+	
+	i = 0;
+	while (i < ttl)
+	{
+		printf("#%d\n", i);
+		k = -1;
+		while (++k < 4)
+			printf("x: %d, y: %d\n", pcs[i][k][0], pcs[i][k][1]);
+		p = *(int**)pcs[i][5];
+		printf("coord-p: %p, point to: %p \n", pcs[i][4], p);
+		i++;
+	}
+}
+
+void	match(int pcs[26][6][2], int ttl)
+{
+	int		i;
+	int		k;
+	int		m;
+	int		match;
+	int		*last;
+
+
+	i = 0;
+	while (i < ttl)
+	{
+		pcs[i][4][0] = 0;
+		pcs[i][4][1] = 0;
+		*((int**)pcs[i++][5]) = 0;
+	}
+	i = 0;
+	
+	while (i < ttl)
+	{
+		if (!*((int**)pcs[i][5]))
+		{
+			last = pcs[i][4];
+			k = i + 1;
+			while (k < ttl)
+			{
+				match = 0;
+				m = 0;
+				while (m < 4)
+				{
+					if ((pcs[i][m][0] == pcs[k][m][0]) &&
+						   (pcs[i][m][1] == pcs[k][m][1]))
+						match = 1;
+					else
+					{
+						match = 0;
+						break ;
+					}
+					m++;
+				}
+				if (match == 1)
+				{
+					*((int**)pcs[k][5]) = last;
+					last = pcs[k][4];
+				//	magic = pcs[k][5];
+				//	*((int**)magic) = pcs[i][5];
+				}
+		 		k++;
+			}
+  		}
+		i++;
+	}
+}
+
 int		main()
 {
-	int		pcs[26][4][2];
+	int		pcs[26][6][2];
 	int 	fd;
 	int		ttl;
 	char	**board;
@@ -28,7 +102,10 @@ int		main()
 		ft_putstr("error");
 		return (0);
 	}
-	size = 0;
+	size = 2;
+
+	match(pcs, ttl);
+	print_coord(pcs, ttl);
 	while (size * size < ttl * 4)
 		size++;
 

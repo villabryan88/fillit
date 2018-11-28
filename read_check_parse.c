@@ -6,13 +6,13 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 23:19:05 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/15 20:34:53 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/27 14:37:31 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fillit.h>
 
-int		read_check_parse(int fd, int (*pcs)[26][4][2])
+int		read_check_parse(int fd, int (*pcs)[26][6][2])
 {
 	char	*tetris;
 	int		red;
