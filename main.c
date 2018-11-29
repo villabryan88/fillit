@@ -6,92 +6,72 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 22:12:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/27 23:01:37 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/29 00:16:03 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fillit.h>
 #include <stdio.h>
 
-void	print_coord(int pcs[26][6][2], int ttl)
+int		init_board(char ***board, int size)
 {
-	int 	i;
-	int		k;
-	int		*p;
-	
+	int	i;
+	int	j;
+
+	if (!(*board = (char**)malloc(sizeof(char*) * (size + 2))))
+		return (0);
 	i = 0;
-	while (i < ttl)
+	j = 0;
+	while (i < size)
 	{
-		printf("#%d\n", i);
-		k = -1;
-		while (++k < 4)
-			printf("x: %d, y: %d\n", pcs[i][k][0], pcs[i][k][1]);
-		p = *(int**)pcs[i][5];
-		printf("coord-p: %p, point to: %p \n", pcs[i][4], p);
+		if (!((*board)[i] = (char*)malloc(sizeof(char) * (size + 1))))
+			return (ft_dblstrarrclr(board, i, 0));
+		j = 0;
+		while (j < size)
+		{
+			(*board)[i][j] = '.';
+			j++;
+		}
+		(*board)[i][j] = '\0';
 		i++;
 	}
+	(*board)[i++] = NULL;
+	if (!((*board)[i] = (char*)malloc(sizeof(char))))
+		return (ft_dblstrarrclr(board, i, 0));
+	(*board)[i][0] = 'A';
+	return (1);
 }
 
-void	match(int pcs[26][6][2], int ttl)
+void	disp_board(char **board, int size)
 {
 	int		i;
-	int		k;
-	int		m;
-	int		match;
-	int		*last;
 
 	i = 0;
-	while (i < ttl)
-	{
-		pcs[i][4][0] = 0;
-		pcs[i][4][1] = 0;
-		*((int**)pcs[i++][5]) = 0;
-	}
-	i = 0;
-	while (i < ttl)
-	{
-		if (!*((int**)pcs[i][5]))
-		{
-			last = pcs[i][4];
-			k = i + 1;
-			while (k < ttl)
-			{
-				match = 0;
-				m = 0;
-				while (m < 4)
-				{
-					if ((pcs[i][m][0] == pcs[k][m][0]) &&
-						   (pcs[i][m][1] == pcs[k][m][1]))
-						match = 1;
-					else
-					{
-						match = 0;
-						break ;
-					}
-					m++;
-				}
-				if (match == 1)
-				{
-					*((int**)pcs[k][5]) = last;
-					last = pcs[k][4];
-				//	magic = pcs[k][5];
-				//	*((int**)magic) = pcs[i][5];
-				}
-				k++;
-			}
-		}
-		i++;
-	}
+	while (i < size)
+		ft_putendl(board[i++]);
 }
 
-int 	main(int ac, char **av)
-{	
+void	logic(int pcs[26][6][2], char ***board, int ttl)
+{
+	int		size;
+
+	size = 2;
+	match(pcs, ttl);
+	while (size * size < ttl * 4)
+		size++;
+	init_board(board, size);
+	while (!backtracer(pcs, ttl, 0, *board))
+		init_board(board, ++size);
+	disp_board(*board, size);
+}
+
+int		main(int ac, char **av)
+{
 	int		pcs[26][6][2];
 	int		fd;
 	int		ttl;
 	char	**board;
 	int		size;
-	int		i;
 
 	if (!(ac == 2))
 	{
@@ -105,39 +85,6 @@ int 	main(int ac, char **av)
 		ft_putstr("error");
 		return (0);
 	}
-	size = 2;
-
-	match(pcs, ttl);
-	print_coord(pcs, ttl);
-	while (size * size < ttl * 4)
-		size++;
-	ft_putnbrendl(size);
-	init_board(&board, size);
-	while (!backtracer(pcs, ttl, 0, board))
-	// {
-		init_board(&board, ++size);
-		// ft_putnbrendl(size);
-	// }
-	
-//	backtracer(pcs, ttl, 0, board);
-
-	i = 0;
-	while (i < size)
-		ft_putendl(board[i++]);
-	ft_putendl(board[i+1]);
-
-/*	while (i < ttl)
-	{
-		printf("block #%d:\n", i);
-		k = 0;
-		while (k < 4)
-		{
-			printf("x: %d, y: %d\n", pcs[i][k][0],  pcs[i][k][1]);
-			k++;
-		}
-		i++;
-	}
-*/	
-	return(0);
+	logic(pcs, &board, ttl);
+	return (0);
 }
-

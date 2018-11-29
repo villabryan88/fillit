@@ -6,15 +6,15 @@
 /*   By: bvilla <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 18:59:41 by bvilla            #+#    #+#             */
-/*   Updated: 2018/11/27 23:01:02 by bvilla           ###   ########.fr       */
+/*   Updated: 2018/11/28 22:42:56 by bvilla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	cleanup(char **board, int tetri[6][2], int x, int y)
+int		cleanup(char **board, int tetri[6][2], int x, int y)
 {
-	int 	x2;
+	int		x2;
 	int		y2;
 	int		pc;
 	int		size;
@@ -29,81 +29,65 @@ void	cleanup(char **board, int tetri[6][2], int x, int y)
 	while (pc < 4)
 	{
 		x2 = tetri[pc][0];
-	   	y2 = tetri[pc][1];
+		y2 = tetri[pc][1];
 		if (y + y2 < size && x + x2 < size)
 			if (board[y + y2][x + x2] == ltr)
 				board[y + y2][x + x2] = '.';
 		pc++;
 	}
+	return (0);
 }
 
+int		board_size(char **board)
+{
+	int		size;
 
-		
+	size = 0;
+	while (board[size])
+		size++;
+	return (size);
+}
+
 int		place_block(char **board, int tetri[6][2], int x, int y)
 {
-	int 	x2;
+	int		x2;
 	int		y2;
 	int		pc;
 	int		size;
 	char	ltr;
 
-	y2 = 0;
-	while (board[y2])
-		y2++;
-	size = y2;
-	ltr = board[y2 + 1][0];
-	pc = 0;
-	while (pc < 4)
+	size = board_size(board);
+	ltr = board[size + 1][0];
+	pc = -1;
+	while (++pc < 4)
 	{
-		x2 = tetri[pc][0];
-	   	y2 = tetri[pc][1];
-		if (y + y2 < size && x + x2 < size)
-		{
-			if (board[y + y2][x + x2] == '.')
-				board[y + y2][x + x2] = ltr;
-			else
-			{
-				cleanup(board, tetri, x, y);
-				return (0);
-			}
-		}
-		else
+		x2 = tetri[pc][0] + x;
+		y2 = tetri[pc][1] + y;
+		if ((y2 >= size && (ltr = -2)) ||
+				(x2 >= size && (ltr = -1)))
 		{
 			cleanup(board, tetri, x, y);
-			return (y + y2 >= size ? -2 : -1);
+			return (ltr);
 		}
-		pc++;
+		if (board[y2][x2] == '.')
+			board[y2][x2] = ltr;
+		else
+			return (cleanup(board, tetri, x, y));
 	}
 	return (1);
 }
 
-int		init_board(char ***board, int size)
+void	set_coord(int pcs[26][6][2], int pc, int **i, int **k)
 {
-	int	i;
-	int	j;
-
-	if(!(*board = (char**)malloc(sizeof(char*)*(size + 2))))
-		return (0);
-	i = 0;
-	j = 0;
-	while(i < size)
+	*i = pcs[pc][4] + 1;
+	*k = pcs[pc][4];
+	if ((*(int**)pcs[pc][5]))
 	{
-		if(!((*board)[i] = (char*)malloc(sizeof(char)*(size + 1))))
-			return (ft_dblstrarrclr(board, i, 0));
-		j = 0;
-		while (j < size)
-		{
-			(*board)[i][j] = '.';
-			j++;
-		}
-		(*board)[i][j] = '\0';
-		i++;
+		**i = (*(int**)pcs[pc][5])[1];
+		**k = (*(int**)pcs[pc][5])[0] + 1;
 	}
-	(*board)[i++] = NULL;
-	if (!((*board)[i] = (char*)malloc(sizeof(char))))
-		return (ft_dblstrarrclr(board, i, 0));
-	(*board)[i][0] = 'A';
-	return (1);
+	else
+		**i = 0;
 }
 
 int		backtracer(int pcs[26][6][2], int ttl, int pc, char **board)
@@ -113,44 +97,24 @@ int		backtracer(int pcs[26][6][2], int ttl, int pc, char **board)
 	int		size;
 	int		oflo;
 
-	size = 0;
-	while (board[size])
-		size++;
-	i = pcs[pc][4] + 1;
-	k = pcs[pc][4];
-
-	if ((*(int**)pcs[pc][5]))
-	{
-		*i = (*(int**)pcs[pc][5])[1];
-		*k = (*(int**)pcs[pc][5])[0] + 1;
-	}
-
+	size = board_size(board);
+	set_coord(pcs, pc, &i, &k);
 	board[size + 1][0] = pc + 'A';
-
-	while(*i < size)
+	while (*i < size)
 	{
 		while (*k < size)
 		{
-			if((oflo = place_block(board, pcs[pc], *k, *i)) > 0)
+			if ((oflo = place_block(board, pcs[pc], *k, *i)) > 0)
 			{
-
-				if (pc == ttl - 1)
-					return (1);
-				if(backtracer(pcs, ttl, pc + 1, board))
+				if (pc == ttl - 1 || backtracer(pcs, ttl, pc + 1, board))
 					return (1);
 				board[size + 1][0] = pc + 'A';
 				cleanup(board, pcs[pc], *k, *i);
 			}
-			*k += 1;
-			if (oflo < 0)
-				*k = size;
+			*k = oflo < 0 ? size : *k + 1;
 		}
 		*k = 0;
-		*i += 1;
-		if (oflo == -2)
-			*i = size;
+		*i = oflo == -2 ? size : *i + 1;
 	}
-	if (pcs[pc][4][0] == 0)
-		*i = 0;
 	return (0);
 }
