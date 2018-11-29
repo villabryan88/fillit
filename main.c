@@ -40,7 +40,6 @@ void	match(int pcs[26][6][2], int ttl)
 	int		match;
 	int		*last;
 
-
 	i = 0;
 	while (i < ttl)
 	{
@@ -49,7 +48,6 @@ void	match(int pcs[26][6][2], int ttl)
 		*((int**)pcs[i++][5]) = 0;
 	}
 	i = 0;
-	
 	while (i < ttl)
 	{
 		if (!*((int**)pcs[i][5]))
@@ -79,23 +77,28 @@ void	match(int pcs[26][6][2], int ttl)
 				//	magic = pcs[k][5];
 				//	*((int**)magic) = pcs[i][5];
 				}
-		 		k++;
+				k++;
 			}
-  		}
+		}
 		i++;
 	}
 }
 
-int		main()
-{
+int 	main(int ac, char **av)
+{	
 	int		pcs[26][6][2];
-	int 	fd;
+	int		fd;
 	int		ttl;
 	char	**board;
 	int		size;
 	int		i;
 
-	fd = open("sample.txt", O_RDONLY);
+	if (!(ac == 2))
+	{
+		ft_putstr("fillit target_file");
+		return (0);
+	}
+	fd = open(av[1], O_RDONLY);
 	ttl = read_check_parse(fd, &pcs);
 	if (ttl == -1)
 	{
@@ -108,14 +111,13 @@ int		main()
 	print_coord(pcs, ttl);
 	while (size * size < ttl * 4)
 		size++;
-
 	ft_putnbrendl(size);
 	init_board(&board, size);
-while (!backtracer(pcs, ttl, 0, board))
-{
-	init_board(&board, ++size);
-	ft_putnbrendl(size);
-}
+	while (!backtracer(pcs, ttl, 0, board))
+	// {
+		init_board(&board, ++size);
+		// ft_putnbrendl(size);
+	// }
 	
 //	backtracer(pcs, ttl, 0, board);
 
