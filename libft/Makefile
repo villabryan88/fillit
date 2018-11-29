@@ -6,7 +6,7 @@
 #    By: bvilla <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/22 20:11:16 by bvilla            #+#    #+#              #
-#    Updated: 2018/11/13 21:51:59 by bvilla           ###   ########.fr        #
+#    Updated: 2018/11/29 00:28:54 by bvilla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,13 +34,17 @@ VPATH = srcs
 HEADERS = includes
 OBJS = $(SOURCE:%.c=%.o)
 $(NAME): 
-	gcc -Wall -Wextra -Werror -c $(SOURCE) -I$(HEADERS) 
-	ar rc $(NAME) $(OBJS)
-	ranlib $(NAME)
+	@echo "compiling library"
+	@gcc -Wall -Wextra -Werror -c $(SOURCE) -I$(HEADERS) 
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
+	@echo "library compiled"
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
+	@echo "cleaned objects"
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "cleaned binary"
 all: $(NAME)
 re: fclean all
 
